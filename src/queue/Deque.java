@@ -64,6 +64,24 @@ public class Deque<Item> implements Iterable<Item> {
 		}
 	}
 	
+	private class DequeueIterator<Item> implements Iterator<Item>{
+		
+		private Node current = first;
+		
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public Item next() {
+			Item item = (Item) current.item;
+			current = current.next;
+			return item;
+		}
+		
+	}
+	
 	public static void main(String[] args){
 		
 	}
