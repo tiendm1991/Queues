@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
 	
-	private Node<Item> first,oldFirst,last, oldLast;
+	private Node<Item> first,last;
 	
 	public Deque(){
 		
@@ -25,30 +25,36 @@ public class Deque<Item> implements Iterable<Item> {
 
 	public void addFirst(Item item) throws IllegalArgumentException{
 		if(item == null) throw new IllegalArgumentException ("item illegal to addFirst!");
-		first = new Node<>(item);
-		first.next = oldFirst;
-		oldFirst = first;
+		Node<Item> newFirst = new Node<>(item);
+		newFirst.next = first;
+		first.prev = newFirst;
+		first = newFirst;
 	}
 
 	public void addLast(Item item) throws IllegalArgumentException{
 		if(item == null) throw new IllegalArgumentException ("item illegal to addLast!");
-		last = new Node<>(item);
-		last.next = oldLast;
-		oldLast = last;
+		Node<Item> newLast = new Node<>(item);
+		newLast.prev = last;
+		last.next = newLast;
+		last = newLast;
 	}
 
 	public Item removeFirst() throws NoSuchElementException{
 		if(first == null) throw new NoSuchElementException("No element first to remove!");
-		oldFirst = first.next;
-		first.next = null;
-		return oldFirst.item;
+		Node<Item> firstRemove = first;
+		first = first.next;
+		firstRemove.next = null;
+		first.prev = null;
+		return firstRemove.item;
 	}
 
 	public Item removeLast() throws NoSuchElementException{
 		if(last == null) throw new NoSuchElementException("No element last to remove!");
-		oldLast = last.next;
+		Node<Item> lastRemove = last;
+		last = last.prev;
+		lastRemove.prev= null;
 		last.next = null;
-		return oldLast.item;
+		return lastRemove.item;
 	}
 
 	public Iterator<Item> iterator() {
@@ -58,6 +64,7 @@ public class Deque<Item> implements Iterable<Item> {
 	private class Node<Item>{
 		Item item;
 		Node<Item> next;
+		Node<Item> prev;
 		public Node(Item item) {
 			super();
 			this.item = item;
