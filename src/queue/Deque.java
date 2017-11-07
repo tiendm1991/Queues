@@ -58,7 +58,7 @@ public class Deque<Item> implements Iterable<Item> {
 	}
 
 	public Iterator<Item> iterator() {
-		return null;
+		return new DequeueIterator();
 	}
 	
 	private class Node<Item>{
@@ -71,9 +71,9 @@ public class Deque<Item> implements Iterable<Item> {
 		}
 	}
 	
-	private class DequeueIterator<Item> implements Iterator<Item>{
+	private class DequeueIterator implements Iterator<Item>{
 		
-		private Node current = first;
+		private Node<Item> current = first;
 		
 		@Override
 		public boolean hasNext() {
@@ -82,9 +82,14 @@ public class Deque<Item> implements Iterable<Item> {
 
 		@Override
 		public Item next() {
-			Item item = (Item) current.item;
+			Item item = current.item;
 			current = current.next;
 			return item;
+		}
+
+		@Override
+		public void remove() throws UnsupportedOperationException {
+			throw new UnsupportedOperationException("Not support remove mothod");
 		}
 		
 	}
